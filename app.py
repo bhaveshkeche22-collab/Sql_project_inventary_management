@@ -28,34 +28,58 @@ def get_products():
     return jsonify(products)
 
 
+
 # Add product
 @app.route("/products", methods=["POST"])
 def add_product():
+    conn = None
+    cursor = None
 
-    data = request.json
+    try:
+        data = request.get_json(silent=True)
 
-    name = data["name"]
-    category = data["category"]
-    quantity = data["quantity"]
-    price = data["price"]
+        if not data:
+            return jsonify({"error": "No valid JSON data received"}), 400
 
-    conn = get_connection()
-    cursor = conn.cursor()
+        name = data.get("name")
+        category = data.get("category")
+        quantity = data.get("quantity")
+        price = data.get("price")
 
-    query = """
-        INSERT INTO products
-        (name, category, quantity, price)
-        VALUES (%s, %s, %s, %s)
-    """
+        if not name or not category or quantity is None or price is None:
+            return jsonify({"error": "All fields are required"}), 400
 
-    cursor.execute(query, (name, category, quantity, price))
+        quantity = int(quantity)
+        price = float(price)
 
-    conn.commit()
+        if quantity < 0 or price < 0:
+            return jsonify({"error": "Quantity and price cannot be negative"}), 400
 
-    cursor.close()
-    conn.close()
+        conn = get_connection()
+        cursor = conn.cursor()
 
-    return jsonify({"message": "Product added successfully"})
+        query = """
+            INSERT INTO products (name, category, quantity, price)
+            VALUES (%s, %s, %s, %s)
+        """
+
+        cursor.execute(query, (name, category, quantity, price))
+        conn.commit()
+
+        return jsonify({"message": "Product added successfully"}), 201
+
+    except (ValueError, TypeError):
+        return jsonify({"error": "Quantity and price must be valid numbers"}), 400
+
+    except Exception:
+        app.logger.exception("Failed to add product")
+        return jsonify({"error": "Database operation failed. Check server logs."}), 500
+
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 
 # Update product

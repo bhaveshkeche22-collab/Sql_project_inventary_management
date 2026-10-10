@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inventory Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="dashboard">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                📦
+                <span>Inventory</span>
+            </div>
+
+            <div class="menu">
+
+                <button class="menu-item active">
+                    🏠 Dashboard
+                </button>
+
+                <button class="menu-item">
+                    📦 Products
+                </button>
+
+                <button class="menu-item">
+                    📊 Reports
+                </button>
+
+                <button class="menu-item">
+                    ⚙️ Settings
+                </button>
+
+            </div>
+
+            <div class="sidebar-bottom">
+
+                <p>Inventory System</p>
+                <small>Python + MySQL</small>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main">
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div>
+                    <h1>Inventory Dashboard</h1>
+                    <p>Manage your warehouse inventory</p>
+                </div>
+
+                <div class="user">
+                    👤 Admin
+                </div>
+
+            </header>
+
+
+            <!-- STATISTICS -->
+
+            <section class="stats">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📦
+                    </div>
+
+                    <div>
+                        <p>Total Products</p>
+                        <h2 id="totalProducts">0</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📈
+                    </div>
+
+                    <div>
+                        <p>Total Stock</p>
+                        <h2 id="totalStock">0</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ⚠️
+                    </div>
+
+                    <div>
+                        <p>Low Stock</p>
+                        <h2 id="lowStock">0</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        💰
+                    </div>
+
+                    <div>
+                        <p>Inventory Value</p>
+                        <h2 id="inventoryValue">₹0</h2>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PRODUCT SECTION -->
+
+            <section class="content-card">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>Product Inventory</h2>
+
+                        <p>
+                            Manage all your products
+                        </p>
+
+                    </div>
+
+<button type="button" class="add-btn" id="addProductBtn">
+    + Add Product
+</button>
+
+                </div>
+
+
+                <!-- SEARCH -->
+
+                <div class="search-container">
+
+                    <input
+                        type="text"
+                        id="search"
+                        placeholder="🔍 Search product or category..."
+                        onkeyup="searchProduct()">
+
+                </div>
+
+
+                <!-- TABLE -->
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Action</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="productTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ADD PRODUCT MODAL -->
+
+    <div id="productModal" class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2>➕ Add New Product</h2>
+
+                <button onclick="closeModal()">
+                    ×
+                </button>
+
+            </div>
+
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Product Name">
+
+
+            <input
+                type="text"
+                id="category"
+                placeholder="Category">
+
+
+            <input
+                type="number"
+                id="quantity"
+                placeholder="Quantity">
+
+
+            <input
+                type="number"
+                id="price"
+                placeholder="Price">
+
+
+            <button
+                class="save-btn"
+                onclick="addProduct()">
+
+                Save Product
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
